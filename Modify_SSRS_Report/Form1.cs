@@ -133,21 +133,21 @@ namespace Modify_SSRS_Report
 
                                 // cell.Style.Font.Strike;
 
-                                OfficeOpenXml.Style.ExcelRichText ert = roomsWorksheet.Cells[2, 1].RichText.Add("bugaga");
+                                OfficeOpenXml.Style.ExcelRichText ert = roomsWorksheet.Cells[2, 1].RichText.Add("RichText");
                                 ert.Bold = true;
                                 ert.Color = System.Drawing.Color.Red;
                                 ert.Italic = true;
                                 ert.Size = 12;
 
 
-                                ert = roomsWorksheet.Cells[2, 1].RichText.Add("alohaaaaa");
+                                ert = roomsWorksheet.Cells[2, 1].RichText.Add("Test");
                                 ert.Bold = true;
                                 ert.Color = System.Drawing.Color.Purple;
                                 ert.Italic = true;
                                 ert.UnderLine = true;
                                 ert.Strike = true;
 
-                                ert = roomsWorksheet.Cells[2, 1].RichText.Add("mm");
+                                ert = roomsWorksheet.Cells[2, 1].RichText.Add("123");
                                 ert.Color = System.Drawing.Color.Peru;
                                 ert.Italic = false;
                                 ert.Bold = false;
