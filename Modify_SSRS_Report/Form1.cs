@@ -67,12 +67,14 @@ namespace Modify_SSRS_Report
 
                         // OfficeOpenXml.ExcelWorksheet ws = workBook.Worksheets.First();
                         OfficeOpenXml.ExcelWorksheet roomsWorksheet = workBook.Worksheets["Räume"];
-                        // OfficeOpenXml.ExcelWorksheet UsageTypesWorksheet = workBook.Worksheets["Nutzungsarten"];
-
-                        // OfficeOpenXml.ExcelRange cell = roomsWorksheet.Cells["A1"];
+                        OfficeOpenXml.ExcelWorksheet UsageTypesWorksheet = workBook.Worksheets["Nutzungsarten"];
 
                         if (roomsWorksheet == null) 
                             return dt;
+
+                        if (roomsWorksheet != null)
+                            UsageTypesWorksheet.Hidden = OfficeOpenXml.eWorkSheetHidden.Hidden;
+
 
 
                         int iStartRow = roomsWorksheet.Dimension.Start.Row;
@@ -83,8 +85,7 @@ namespace Modify_SSRS_Report
 
 
 
-
-
+                        // OfficeOpenXml.ExcelRange cell = roomsWorksheet.Cells["A1"];
                         OfficeOpenXml.ExcelRange cell = null; // ewbGroupPermissionWorksheet.Cells[1, 1]; // Cells[y, x]
                         for (int j = 1; j <= iEndColumn; ++j)
                         {
@@ -155,6 +156,10 @@ namespace Modify_SSRS_Report
                                 // Can't add validation when a validation already exists
                                 // OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList cellValidation = cell.DataValidation.AddListDataValidation();
                                 break;
+
+                                // https://stackoverflow.com/questions/9859610/how-to-set-column-type-when-using-epplus
+                                // https://stackoverflow.com/questions/22832423/excel-date-format-using-epplus
+
                             } // Next j 
                             break;
                         } // Next i 
