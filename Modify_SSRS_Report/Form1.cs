@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -95,7 +94,7 @@ namespace Modify_SSRS_Report
                             // if (string.IsNullOrWhiteSpace(title)) continue;
 
                             dt.Columns.Add(title, typeof(string));
-                        }
+                        } // Next j 
 
                         System.Console.WriteLine(dt.Columns.Count);
 
