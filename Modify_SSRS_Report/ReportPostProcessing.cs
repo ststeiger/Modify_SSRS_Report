@@ -103,7 +103,7 @@ namespace Portal_Reports
             if (string.Equals(sheet.Name, "Rent Details Entry", System.StringComparison.OrdinalIgnoreCase))
             {
                 // Rent Details Entry J5:J28
-                OfficeOpenXml.ExcelRange cell = sheet.Cells["J5:J28"];
+                OfficeOpenXml.ExcelRange cell = sheet.Cells["J11:J34"];
                 cell.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 cell.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(242, 220, 219));
                 return;
@@ -122,11 +122,123 @@ namespace Portal_Reports
 
 
 
+            if (string.Equals(sheet.Name, "Rent Details Entry", System.StringComparison.OrdinalIgnoreCase))
+            {
+
+                // Local Currency
+                {
+                    string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_Currency"].Cells["A:A"].FullAddress; // Contract
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("C6");
+
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = ContractRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+
+                // VAT Payable
+                {
+                    string YesNoRange = "=" + sheet.Workbook.Worksheets["T_YesNo"].Cells["A:A"].FullAddress;
+
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("F6");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = YesNoRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // RentDue
+                {
+                    string CycleRange = "=" + sheet.Workbook.Worksheets["T_Ref_Cycle"].Cells["A:A"].FullAddress;
+
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("C7");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = CycleRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // RentDueModality
+                {
+                    string TimePointRange = "=" + sheet.Workbook.Worksheets["T_Ref_TimePoint"].Cells["A:A"].FullAddress;
+
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("D7");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    val.Formula.ExcelFormula = TimePointRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // KindOfArea
+                {
+                    string kindOfAreaRange = "=" + sheet.Workbook.Worksheets["T_Ref_KindOfArea"].Cells["A:A"].FullAddress;
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("A11:A34");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    val.Formula.ExcelFormula = kindOfAreaRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // Quantity
+                {
+                    string kindOfAreaRange = "=" + sheet.Workbook.Worksheets["T_Ref_Unit"].Cells["A:A"].FullAddress;
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("D11:D34");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    val.Formula.ExcelFormula = kindOfAreaRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+            } // End if (string.Equals(sheet.Name, "Rent Details Entry", System.StringComparison.OrdinalIgnoreCase))
+
+
+
             if (string.Equals(sheet.Name, "Contract Details Entry", System.StringComparison.OrdinalIgnoreCase))
             {
                 OfficeOpenXml.ExcelRange cl = sheet.Cells["F16"];
                 sheet.Row(cl.Start.Row).Height = 25;
+
                 
+                // T_Premises
+                {
+                    string CreLoRange = "=" + sheet.Workbook.Worksheets["T_Premises"].Cells["A:A"].FullAddress; // Contract
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("D3");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = CreLoRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // T_Ref_Location
+                {
+                    string CreLoRange = "=" + sheet.Workbook.Worksheets["T_Ref_Location"].Cells["A:A"].FullAddress; // Contract
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("D4");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = CreLoRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+
 
                 // YesNo
                 {
@@ -197,6 +309,33 @@ namespace Portal_Reports
                 // Fix row Height
                 OfficeOpenXml.ExcelRange cl = sheet.Cells["E15"];
                 sheet.Row(cl.Start.Row).Height = 25;
+
+
+                // T_Premises
+                {
+                    string CreLoRange = "=" + sheet.Workbook.Worksheets["T_Premises"].Cells["A:A"].FullAddress; // Contract
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("C2");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = CreLoRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
+
+                // T_Ref_Location
+                {
+                    string CreLoRange = "=" + sheet.Workbook.Worksheets["T_Ref_Location"].Cells["A:A"].FullAddress; // Contract
+                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("C3");
+
+                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                    val.Formula.ExcelFormula = CreLoRange;
+                    val.ShowErrorMessage = true;
+                    val.Error = "Select a value from list of values ...";
+                }
 
 
                 // YesNo
@@ -355,7 +494,7 @@ namespace Portal_Reports
                 {
                     int iEventAndTasksRowNumber = -1;
 
-                    for (int i = 7 ; i < iEndRow; ++i)
+                    for (int i = 7; i < iEndRow; ++i)
                     {
                         OfficeOpenXml.ExcelRange cl = sheet.Cells[i, 1];
                         string celVal = GetCellValueAsString(cl);
@@ -370,20 +509,135 @@ namespace Portal_Reports
                         System.Console.WriteLine(celVal);
                     } // Next i 
 
+                    iEventAndTasksRowNumber--;
+
+                    // Agreed rights and options foo
+                    {
+                        // Type
+                        {
+                            string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskCategory"].Cells["A:A"].FullAddress; // Contract
+                            OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("F8:F" + iEventAndTasksRowNumber.ToString());
+
+                            // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                            //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                            // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                            val.Formula.ExcelFormula = ContractRange;
+                            val.ShowErrorMessage = true;
+                            val.Error = "Select a value from list of values ...";
+                        }
+
+                        // Type
+                        {
+                            string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskStatus"].Cells["A:A"].FullAddress; // Contract
+                            OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("H8:H" + iEventAndTasksRowNumber.ToString());
+
+                            // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                            //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                            // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                            val.Formula.ExcelFormula = ContractRange;
+                            val.ShowErrorMessage = true;
+                            val.Error = "Select a value from list of values ...";
+                        }
+                    }
+
+
+                    iEventAndTasksRowNumber++;
                     iEventAndTasksRowNumber++;
 
+                    // Events and Tasks
+                    {
+                        // Type
+                        {
+                            string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskCategory"].Cells["A:A"].FullAddress; // Contract
+                            OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("B" + iEventAndTasksRowNumber.ToString() + ":B65536");
 
-                    string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskCategory"].Cells["A:A"].FullAddress; // Contract
-                    OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("B" + iEventAndTasksRowNumber.ToString() + ":B65536");
+                            // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                            //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                            // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                            val.Formula.ExcelFormula = ContractRange;
+                            val.ShowErrorMessage = true;
+                            val.Error = "Select a value from list of values ...";
+                        }
 
-                    // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
-                    //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
-                    // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
-                    val.Formula.ExcelFormula = ContractRange;
-                    val.ShowErrorMessage = true;
-                    val.Error = "Select a value from list of values ...";
+
+                        // Event/Activity
+                        {
+                            string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskActivity"].Cells["A:A"].FullAddress; // Contract
+                            OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("E" + iEventAndTasksRowNumber.ToString() + ":E65536");
+
+                            // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                            //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                            // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                            val.Formula.ExcelFormula = ContractRange;
+                            val.ShowErrorMessage = true;
+                            val.Error = "Select a value from list of values ...";
+                        }
+                    }
                 }
 
+                return;
+            } // End if (string.Equals(sheet.Name, "Options & Tasks Review", System.StringComparison.OrdinalIgnoreCase)) 
+
+
+            if (string.Equals(sheet.Name, "Options & Tasks Entry", System.StringComparison.OrdinalIgnoreCase))
+            {
+                // Agreed rights and options
+                {
+                    // Type
+                    {
+                        string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskCategory"].Cells["A:A"].FullAddress; // Contract
+                        OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("F8:F17");
+
+                        // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                        //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                        // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                        val.Formula.ExcelFormula = ContractRange;
+                        val.ShowErrorMessage = true;
+                        val.Error = "Select a value from list of values ...";
+                    }
+
+                    // Status
+                    {
+                        string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskStatus"].Cells["A:A"].FullAddress; // Contract
+                        OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("H8:H17");
+
+                        // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                        //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                        // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                        val.Formula.ExcelFormula = ContractRange;
+                        val.ShowErrorMessage = true;
+                        val.Error = "Select a value from list of values ...";
+                    }
+                }
+
+                // Events and tasks
+                {
+                    // Type
+                    {
+                        string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskCategory"].Cells["A:A"].FullAddress; // Contract
+                        OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("B23:B37");
+
+                        // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                        //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                        // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                        val.Formula.ExcelFormula = ContractRange;
+                        val.ShowErrorMessage = true;
+                        val.Error = "Select a value from list of values ...";
+                    }
+
+                    // Event/Activity
+                    {
+                        string ContractRange = "=" + sheet.Workbook.Worksheets["T_Ref_TaskActivity"].Cells["A:A"].FullAddress; // Contract
+                        OfficeOpenXml.DataValidation.Contracts.IExcelDataValidationList val = sheet.DataValidations.AddListValidation("E23:E37");
+
+                        // https://stackoverflow.com/questions/20259692/epplus-number-of-drop-down-items-limitation-in-excel-file
+                        //val.Formula.ExcelFormula = string.Format("=DropDownWorksheetName!${0}${1}:${2}${3}", char1, num1, char2, num2);
+                        // val.Formula.ExcelFormula = string.Format("=Nutzungsarten!{0}", "H2:H72");
+                        val.Formula.ExcelFormula = ContractRange;
+                        val.ShowErrorMessage = true;
+                        val.Error = "Select a value from list of values ...";
+                    }
+                }
                 return;
             } // End if (string.Equals(sheet.Name, "Options & Tasks Review", System.StringComparison.OrdinalIgnoreCase)) 
             
@@ -456,6 +710,10 @@ namespace Portal_Reports
                         ForAllSheets(workBook, ColorizeDatePicker);
                         ForAllSheets(workBook, DotLineToHairLine);
                         ForAllSheets(workBook, SetCellValidation);
+                        
+                        workBook.View.ActiveTab = 0;
+                        workBook.Worksheets["Contract Details Review"].View.TabSelected = true;
+
 
                         // OfficeOpenXml.ExcelWorksheet roomsWorksheet = workBook.Worksheets["Contract Details Review"];
                         // if (roomsWorksheet == null) return;

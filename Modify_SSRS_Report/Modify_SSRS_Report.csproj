@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus, Version=4.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\EPPlus\4.0.4\EPPlus.dll</HintPath>
@@ -119,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="info.txt" />
+    <Content Include="Libs\DotNetZip.dll" />
     <Content Include="Libs\EPPlus\4.0.4\EPPlus.dll" />
     <Content Include="Libs\EPPlus\4.0.4\EPPlus.XML" />
     <Content Include="Libs\ReportViewer\2015\Microsoft.ReportViewer.Common.dll" />
