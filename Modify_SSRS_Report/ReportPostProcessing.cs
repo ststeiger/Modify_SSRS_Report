@@ -128,6 +128,32 @@ namespace Portal_Reports
         } // End Sub HideReferenceTabs 
 
 
+
+        public static void SetEntryLink(OfficeOpenXml.ExcelWorksheet sheet)
+        {
+            if (string.Equals(sheet.Name, "Rent Details Entry", System.StringComparison.OrdinalIgnoreCase))
+            {
+                OfficeOpenXml.ExcelRange cellLocation = sheet.Cells["D2"];
+                OfficeOpenXml.ExcelRange cellPremise = sheet.Cells["D3"];
+
+                cellLocation.Formula = "='Contract Details Entry'!D3";
+                cellPremise.Formula = "='Contract Details Entry'!D4";
+
+                return;
+            }
+
+            if (string.Equals(sheet.Name, "Options & Tasks Entry", System.StringComparison.OrdinalIgnoreCase))
+            {
+                OfficeOpenXml.ExcelRange cellLocation = sheet.Cells["F2"];
+                OfficeOpenXml.ExcelRange cellPremise = sheet.Cells["F3"];
+
+                cellLocation.Formula = "='Contract Details Entry'!D3";
+                cellPremise.Formula = "='Contract Details Entry'!D4";
+
+                return;
+            }
+        }
+
         public static void ColorizeDatePicker(OfficeOpenXml.ExcelWorksheet sheet)
         {
             if (string.Equals(sheet.Name, "Contract Details Review", System.StringComparison.OrdinalIgnoreCase))
@@ -808,6 +834,7 @@ namespace Portal_Reports
                         ForAllSheets(workBook, ColorizeDatePicker);
                         ForAllSheets(workBook, DotLineToHairLine);
                         ForAllSheets(workBook, SetCellValidation);
+                        ForAllSheets(workBook, SetEntryLink);
                         // ForAllSheets(workBook, AddRowAtPos2);
 
                         workBook.View.ActiveTab = 0;

@@ -122,6 +122,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="cascading_dropdown.txt" />
     <Content Include="info.txt" />
     <Content Include="Libs\DotNetZip.dll" />
     <Content Include="Libs\EPPlus\4.0.4\EPPlus.dll" />
