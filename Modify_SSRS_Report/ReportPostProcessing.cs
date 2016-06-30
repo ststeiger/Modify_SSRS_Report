@@ -90,19 +90,6 @@ namespace Portal_Reports
         } // End Sub AddRowAtPos2 
 
 
-
-        public static void LoopSheets(OfficeOpenXml.ExcelWorksheet sheet)
-        {
-            if (sheet.Name.IndexOf("Tabelle1") != -1)
-            {
-                var cl = sheet.Cells[2, 2];
-                var vl = GetCellValueAsString(cl);
-                System.Console.WriteLine(cl);
-                System.Console.WriteLine(vl);
-            }
-                
-        } // End Sub ColorizeTabs 
-
         public static void ColorizeTabs(OfficeOpenXml.ExcelWorksheet sheet)
         {
             if (sheet.Name.IndexOf("Entry") != -1)
