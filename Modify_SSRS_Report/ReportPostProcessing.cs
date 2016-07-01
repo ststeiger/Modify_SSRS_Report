@@ -3,11 +3,18 @@ namespace Portal_Reports
 {
 
 
-    static class LeaseContractFormPostProcessing
+    public class LeaseContractFormPostProcessing
     {
 
-
         public delegate void ExcelWorksheetCallback_t(OfficeOpenXml.ExcelWorksheet sheet);
+
+
+        public enum ReportType_t : int
+        {
+            Review
+           ,Entry
+           ,Both
+        }
 
 
         public static void ForAllSheets(OfficeOpenXml.ExcelWorkbook workBook, ExcelWorksheetCallback_t perWorksheetCallback)
@@ -90,6 +97,68 @@ namespace Portal_Reports
         } // End Sub AddRowAtPos2 
 
 
+        public static bool CanRemoveThisSheet(OfficeOpenXml.ExcelWorksheet sheet, ReportType_t reportType)
+        {
+            string[] reviewSheetNames = new string[] { 
+                 "Contract Details Review"
+                ,"Rent Details Review"
+                ,"Options & Tasks Review"
+            };
+
+
+            string[] entrySheetNames = new string[] { 
+                 "Contract Details Entry"
+                ,"Rent Details Entry"
+                ,"Options & Tasks Entry"
+            };
+
+
+            string[] whiteListedWorksheetNames = new string[] { 
+                 "Contract Details Review"
+                ,"Rent Details Review"
+                ,"Options & Tasks Review"
+                ,"Contract Details Entry"
+                ,"Rent Details Entry"
+                ,"Options & Tasks Entry"
+            };
+
+
+            int ind = System.Array.FindIndex(whiteListedWorksheetNames, delegate(string thisSheetName) { return string.Equals(sheet.Name, thisSheetName); });
+            if (ind == -1)
+                return false;
+
+
+            if (reportType == ReportType_t.Review)
+            {
+                foreach (string sheetName in entrySheetNames)
+                {
+
+                    if (string.Equals(sheet.Name, sheetName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    } // End if (string.Equals(sheet.Name, sheetName, System.StringComparison.OrdinalIgnoreCase)) 
+
+                } // Next sheetName
+
+            } // End if (reportType == ReportType_t.Review) 
+
+            if (reportType == ReportType_t.Entry)
+            {
+                foreach (string sheetName in reviewSheetNames)
+                {
+
+                    if (string.Equals(sheet.Name, sheetName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    } // End if (string.Equals(sheet.Name, sheetName, System.StringComparison.OrdinalIgnoreCase)) 
+
+                } // Next sheetName
+            } // End if (reportType == ReportType_t.Entry) 
+
+            return false;
+        } // End Sub HideReferenceTabs 
+
+
         public static void ColorizeTabs(OfficeOpenXml.ExcelWorksheet sheet)
         {
             if (sheet.Name.IndexOf("Entry") != -1)
@@ -128,7 +197,6 @@ namespace Portal_Reports
         } // End Sub HideReferenceTabs 
 
 
-
         public static void SetEntryLink(OfficeOpenXml.ExcelWorksheet sheet)
         {
             if (string.Equals(sheet.Name, "Rent Details Entry", System.StringComparison.OrdinalIgnoreCase))
@@ -153,6 +221,7 @@ namespace Portal_Reports
                 return;
             }
         }
+
 
         public static void ColorizeDatePicker(OfficeOpenXml.ExcelWorksheet sheet)
         {
@@ -810,7 +879,10 @@ namespace Portal_Reports
 
 
 
-        public static byte[] ProcessWorkbook(byte[] ba)
+
+
+
+        private static byte[] ModifyExcelFile(byte[] ba)
         {
             byte[] baOutput = null;
 
@@ -837,13 +909,8 @@ namespace Portal_Reports
                         ForAllSheets(workBook, SetEntryLink);
                         // ForAllSheets(workBook, AddRowAtPos2);
 
-                        workBook.View.ActiveTab = 0;
-                        workBook.Worksheets["Contract Details Review"].View.TabSelected = true;
-
-
                         // OfficeOpenXml.ExcelWorksheet roomsWorksheet = workBook.Worksheets["Contract Details Review"];
                         // if (roomsWorksheet == null) return;
-
 
                         using (System.IO.MemoryStream msOutput = new System.IO.MemoryStream())
                         {
@@ -861,14 +928,55 @@ namespace Portal_Reports
         } // End Sub ProcessWorkbook 
 
 
+        public static byte[] ProcessWorkbook(byte[] ba, ReportType_t reportType)
+        {
+            byte[] baOutput = null;
+            ba = ModifyExcelFile(ba);
+
+
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(ba))
+            {
+
+                // Get the file we are going to process
+                // Open and read the XlSX file.
+                // System.IO.FileInfo existingFile = new System.IO.FileInfo(fn);
+                // using (OfficeOpenXml.ExcelPackage package = new OfficeOpenXml.ExcelPackage(existingFile))
+                using (OfficeOpenXml.ExcelPackage package = new OfficeOpenXml.ExcelPackage(ms))
+                {
+                    // Get the work book in the file
+                    OfficeOpenXml.ExcelWorkbook workBook = package.Workbook;
+                    if (workBook != null)
+                    {
+
+                        for (int i = workBook.Worksheets.Count - 1; i > 0; --i)
+                        {
+                            if (CanRemoveThisSheet(workBook.Worksheets[i], reportType))
+                                workBook.Worksheets.Delete(i);
+                        }
+
+                        using (System.IO.MemoryStream msOutput = new System.IO.MemoryStream())
+                        {
+                            package.SaveAs(msOutput);
+                            baOutput = msOutput.ToArray();
+                        } // End using fs
+                    }
+                }
+            }
+
+            return baOutput;
+        }
+
+
+
         public static byte[] ProcessWorkbook()
         {
             string fn = @"D:\username\Downloads\LeaseContractForm.xlsx";
             // fn = @"D:\stefan.steiger\Downloads\TestFile.xlsx";
+            // fn = @"D:\stefan.steiger\Downloads\LeaseContractEntryForm.xlsx";
 
 
             byte[] ba = System.IO.File.ReadAllBytes(fn);
-            ba = ProcessWorkbook(ba);
+            ba = ProcessWorkbook(ba, ReportType_t.Both);
 
             using (System.IO.FileStream fs = new System.IO.FileStream(@"D:\ModifiedExcelFile.xlsx", System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.None))
             {
