@@ -78,7 +78,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cascading_dropdown.txt" />
+    <Content Include="ContractLinks.sql" />
     <Content Include="info.txt" />
     <Content Include="Libs\DotNetZip.dll" />
     <Content Include="Libs\EPPlus\4.0.4\EPPlus.dll" />
