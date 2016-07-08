@@ -10,5 +10,41 @@
 	AND ZOCO_Status = 1 
 ) 
 SELECT 
-	'https://www7.cor-asp.ch/SwissRe_Productiv_Dev/test.ashx?in_contract_uid=' + in_contract_uid + '&in_premise_uid=' + in_premise_uid 
+	CASE 
+		WHEN SUSER_SNAME() LIKE 'COR[\\]%' 
+		THEN 
+			(
+				SELECT TOP 1 
+					REPLACE
+					(
+						REPLACE
+						(
+							REPLACE(FC_Value + '/', '//', '/') 
+							,'_Saml'
+							,''
+						)
+						,'_Portal'
+						,'_Dev'
+					) AS ExternalPortalLink 
+				FROM T_FMS_Configuration 
+				WHERE FC_Key = 'portalLink' 
+			) 
+		ELSE (
+				SELECT TOP 1 
+					REPLACE(FC_Value + '/', '//', '/') AS InternalPortalLink 
+				FROM T_FMS_Configuration 
+				WHERE FC_Key = 'portalLink' 
+			 )
+	END 
+	+ 'test.ashx?in_contract_uid=' + in_contract_uid + '&in_premise_uid=' + in_premise_uid AS TestLink 
 FROM CTE 
+
+-- SELECT * FROM T_FMS_Configuration 
+
+
+SELECT 
+	REPLACE(FC_Value + '/', '//', '/') 
+	+ 'COR/devtool.aspx' 
+	AS BasicLink  
+FROM T_FMS_Configuration 
+WHERE FC_Key = 'basicLink' 
